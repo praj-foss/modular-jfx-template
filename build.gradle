@@ -1,0 +1,21 @@
+apply plugin: "java"
+apply plugin: "application"
+
+sourceCompatibility = 1.9
+sourceSets.main.java.srcDirs += "src"
+mainClassName = "sample.Hello"
+
+jar {
+    from {
+        configurations.compile.collect { zipTree(it) }
+    }
+    manifest {
+        attributes "Main-Class": "sample.Hello"
+    }
+}
+
+task dist(type: Exec) {
+    dependsOn "clean"
+    dependsOn "jar"
+    executable "./dist.sh"
+}
